@@ -1,0 +1,35 @@
+* {
+    margin: 0;
+  
+}
+.container-products  {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4rem;
+    justify-content: center;
+    margin-top: 3rem;
+    margin-bottom: 6rem;
+}
+.container-shopping  {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4rem;
+    justify-content: center;
+    margin-top: 3rem;
+    margin-bottom: 6rem;
+}
+h1  {
+    margin-top: 3rem;
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+   color: #005954;
+}
+hr  {
+    width: 40%;
+    margin-left: 30%;
+    height: 2px;
+    background-color: #5dc1b9;
+    border: none;
+}
