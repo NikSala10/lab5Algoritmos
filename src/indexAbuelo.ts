@@ -1,8 +1,13 @@
 import * as components from './components/indexPadre'
 import Product, { Attribute } from './components/product/product';
+
 import { getProducts } from './services/getProducts';
 import ShoppingCartItem, {AttributeShoppingCart} from './components/shoppingCartItem/shoppingCartItem'
-import './components/shoppingCartItem/shoppingCartItem'
+import './components/shoppingCartItem/shoppingCartItem';
+import './screens/dashboard';
+import  {addObserver} from './store/store';
+
+
 class AppContainer extends HTMLElement {
     products: Product[] = [];
     shoppingCart: ShoppingCartItem[] = [];
@@ -10,7 +15,7 @@ class AppContainer extends HTMLElement {
         constructor()  {
             super();
             this.attachShadow( {mode: 'open'});
-
+            addObserver(this);
            
         }
     
@@ -62,6 +67,10 @@ class AppContainer extends HTMLElement {
                 <hr>
                 <div class="container-shopping"></div>
                 `;
+
+                const dashboard = this.ownerDocument.createElement('app-dashboard');
+                this.shadowRoot?.appendChild(dashboard);
+
 
                 const container = this.shadowRoot?.querySelector('.container-products');
                 this.products.forEach((product) => {
