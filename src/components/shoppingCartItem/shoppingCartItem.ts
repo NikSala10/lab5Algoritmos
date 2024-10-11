@@ -1,3 +1,4 @@
+import { addObserver } from '../../store/store';
 import styles from './shoppingCartItem.css'
 
 export enum AttributeShoppingCart {
@@ -33,6 +34,7 @@ class ShoppingCartItem extends HTMLElement {
         constructor(){
             super();
             this.attachShadow({mode: "open"})
+            addObserver(this)
         }
 
         connectedCallback(){

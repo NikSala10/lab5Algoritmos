@@ -1,6 +1,10 @@
+import { addObserver, appState, dispatch } from '../../store/store';
 import styles from './product.css'
+import { addShoppingCard } from '../../store/actions';
+import storage from '../../utils/storage';
 
 export enum Attribute {
+    "idProduct" = "idProduct",
     "image" = "image",
     "titleproduct" = "titleproduct",
     "description" = "description",
@@ -11,13 +15,14 @@ export enum Attribute {
 
 
 class Product extends HTMLElement {
+    idProduct?: number;
     image?: string;
     titleproduct?: string;
     description?: string;
     category?: string;
     price?: number;
     rating?: number;
-
+  
     static get observedAttributes() {
         return Object.values(Attribute);
     }
@@ -30,7 +35,10 @@ class Product extends HTMLElement {
             case Attribute.rating:
                 this.rating = newValue ? Number(newValue) : undefined;
                 break;
+            case Attribute.idProduct:
+                this.rating = newValue ? Number(newValue) : undefined;
                 break;
+                
             default:
                 this[propName] = newValue;
                 break;
@@ -41,6 +49,7 @@ class Product extends HTMLElement {
         constructor(){
             super();
             this.attachShadow({mode: "open"})
+            addObserver(this)
         }
 
         connectedCallback(){
@@ -67,7 +76,7 @@ class Product extends HTMLElement {
                         <p class="rating">Rating: ${this.rating || 'No  Rating'}</p>
                         <p class="price">$${this.price || 'No Price'}</p>
                         
-                        <button>
+                        <button id="shopping_cart">
                             <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3M7 18c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2m10 0c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2m-9.8-3.2v-.1l.9-1.7h7.4c.7 0 1.4-.4 1.7-1l3.9-7l-1.7-1l-3.9 7h-7L4.3 2H1v2h2l3.6 7.6L5.2 14c-.1.3-.2.6-.2 1c0 1.1.9 2 2 2h12v-2H7.4c-.1 0-.2-.1-.2-.2"/></svg>
                         </button>
                     </div>
@@ -75,10 +84,22 @@ class Product extends HTMLElement {
             </div>       
                 `
             }
-
+            
             const cssProduct = this.ownerDocument.createElement("style");
             cssProduct.innerHTML = styles;
             this.shadowRoot?.appendChild(cssProduct);
+            const addShoppingCardButton = this.shadowRoot?.querySelector('#shopping_cart')
+            addShoppingCardButton?.addEventListener('click', ()=>{
+                dispatch(addShoppingCard({
+                    idProduct: this.idProduct,
+                    image: this.image,
+                    titleproduct: this.titleproduct,
+                    description: this.description,
+                    category: this.category ,
+                    price: this.price,
+                    rating: this.rating,
+                }))
+            })
         }
     }
 customElements.define("product-card",Product);
